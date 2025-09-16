@@ -7,18 +7,18 @@ const app = express();
 
 // ====== 必要な環境変数 ======
 const {
-  STRIPE_SECRET_KEY,        // ダッシュボードの「テスト環境」秘密鍵  sk_test_*****
-  ALLOWED_ORIGINS,          // 例: https://beauty-frontend.onrender.com, http://localhost:5173
-  ADMIN_TOKEN               // 後課金API用の管理トークン（長い英数ランダム文字列）
+  sk_test_51S59dhHFHLP5RXi1ytCFvH6DfiUPMNSH2dq2y04wo0tx95Im40Th3NZcQuISAwIV6s1hcaOViRTzZFI0zWkMq8Kd00EhfoLpMC,        
+  https://beauty-frontend.onrender.com/,          // 例: https://beauty-frontend.onrender.com, http://localhost:5173
+  bl_admin_dev_1234567890abcdef1234567890abcdef         // 後課金API用の管理トークン（長い英数ランダム文字列）
 } = process.env;
 
 if(!STRIPE_SECRET_KEY) throw new Error('STRIPE_SECRET_KEY is required');
 if(!ADMIN_TOKEN) console.warn('⚠ ADMIN_TOKEN 未設定。/api/charge を誰でも叩けます。必ず設定推奨！');
 
-const stripe = new Stripe(STRIPE_SECRET_KEY);
+const stripe = new Stripe(sk_test_51S59dhHFHLP5RXi1ytCFvH6DfiUPMNSH2dq2y04wo0tx95Im40Th3NZcQuISAwIV6s1hcaOViRTzZFI0zWkMq8Kd00EhfoLpMC);
 
 // CORS（フロントの origin を列挙）
-const origins = (ALLOWED_ORIGINS || '').split(',').map(s=>s.trim()).filter(Boolean);
+const origins = (https://beauty-frontend.onrender.com/ || '').split(',').map(s=>s.trim()).filter(Boolean);
 app.use(cors({
   origin: (origin, cb)=>{
     if(!origin) return cb(null, true);
@@ -56,7 +56,7 @@ app.post('/api/setup-intent', async (req, res) => {
 app.post('/api/charge', async (req, res) => {
   try {
     // 簡易認証（必須推奨）
-    if(ADMIN_TOKEN && req.headers['x-admin-token'] !== ADMIN_TOKEN){
+    if(bl_admin_dev_1234567890abcdef1234567890abcdef && req.headers['x-admin-token'] !== bl_admin_dev_1234567890abcdef1234567890abcdef){
       return res.status(401).json({ ok:false, error:'unauthorized' });
     }
 
